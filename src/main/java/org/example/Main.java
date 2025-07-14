@@ -3,6 +3,7 @@ package org.example;
 import org.example.commands.Command;
 import org.example.commands.CommandRegistry;
 import org.example.game.GameWorld;
+import org.example.game.WorldLoader;
 
 import java.util.Map;
 import java.util.Optional;
@@ -14,26 +15,10 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        // 1. Create the rooms
-        Room entryHall = new Room(
-                "entry-hall",
-                "The Grand Entry Hall",
-                "You are in a vast, dusty hall. A single wooden door lies to the NORTH.",
-                Map.of("NORTH", "library") // Java 9+ Map.of for immutable maps
-        );
 
-        Room library = new Room(
-                "library",
-                "The Dusty Library",
-                "You've entered a library filled with ancient, leather-bound books. The exit is to the SOUTH.",
-                Map.of("SOUTH", "entry-hall"));
-
-        Map<String, Room> worldRooms = Map.of(
-                entryHall.id(), entryHall,
-                library.id(), library);
 
         // 3. Create the GameWorld instance
-        GameWorld gameWorld = new GameWorld(worldRooms, "entry-hall");
+        GameWorld gameWorld = WorldLoader.loadWorld();
 
         // -- NEW: Command and game loop starts
         Scanner scanner = new Scanner(System.in);
@@ -53,8 +38,8 @@ public class Main {
             Optional<Command> optionalCommand = commandRegistry.getCommand(command);
 
             if (optionalCommand.isPresent()) {
-                optionalCommand.get().execute(gameWorld, command);
-                if (optionalCommand.get().equals("go")) {
+                optionalCommand.get().execute(gameWorld, argument);
+                if (command.equals("go")) {
                     displayCurrentRoom(gameWorld);
                 }
             } else {

@@ -1,12 +1,12 @@
 # Project Odyssey - Game Engine
 
-This project implements a simple text-based adventure game engine in Java. The core components are:
+This project implements a simple text-based adventure game engine in Java that allows players to explore interconnected rooms using text commands. The core components are:
 
-- **Room:** Represents a location in the game, with a description and exits.
-- **GameWorld:** Manages the collection of rooms and the player's current location.
-- **Command:** An interface for executable actions (e.g., "go north").
-- **CommandRegistry:** Registers and retrieves commands based on user input.
-- **Main:** The entry point, handles game initialization and the main game loop.
+- **Room:** Represents a location in the game with an ID, name, description, and available exits.
+- **GameWorld:** Manages the game state including rooms and player's current location.
+- **Command:** An interface for executable game actions (e.g., "go", "look", "help").
+- **CommandRegistry:** Handles command registration and execution based on user input.
+- **Main:** The entry point that initializes the game world and runs the main game loop.
 
 ## Class Diagram
 
@@ -61,19 +61,21 @@ sequenceDiagram
     participant GW as GameWorld
 
     M->>CR: Create CommandRegistry
-    M->>M: Initialize GameWorld
+    M->>GW: Initialize GameWorld
     loop Game Loop
-        M->>M: Display Current Room
+        M->>GW: Get Current Room
+        GW-->>M: Room Info
+        M->>M: Display Room Info
         M->>M: Get User Input
-        M->>CR: Get Command(input)
-        alt Command Present
-            CR-->>M: Command
-            M->>C: Execute Command(GameWorld, argument)
+        M->>CR: Get Command
+        alt Command Found
+            CR-->>M: Command Object
+            M->>C: Execute(GameWorld, argument)
             C->>GW: Perform Action
-            GW-->>C: Result
-            C-->>M:
-        else Command Not Present
-            CR-->>M: Empty
+            GW-->>C: Action Result
+            C-->>M: Execution Complete
+        else Command Not Found
+            CR-->>M: Empty Optional
             M->>M: Display "Unknown Command"
         end
     end

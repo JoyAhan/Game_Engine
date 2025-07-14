@@ -6,7 +6,7 @@ public class GoCommand implements Command {
 
     @Override
     public void execute(GameWorld gameWorld, String argument) {
-        if (argument == null && argument.isBlank()) {
+        if (argument == null || argument.isBlank()) {
             System.out.println("Go where?");
             return;
         }

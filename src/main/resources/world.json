@@ -1,0 +1,21 @@
+{
+  "startingRoomId": "entry-hall",
+  "rooms": [
+    {
+      "id": "entry-hall",
+      "name": "The Grand Entry Hall",
+      "description": "You are in a vast, dusty hall with a high, vaulted ceiling. A single heavy oak door lies to the NORTH.",
+      "exits": {
+        "NORTH": "library"
+      }
+    },
+    {
+      "id": "library",
+      "name": "The Dusty Library",
+      "description": "You've entered a library filled with ancient, leather-bound books. The smell of old paper and dust is overwhelming. The only exit is to the SOUTH.",
+      "exits": {
+        "SOUTH": "entry-hall"
+      }
+    }
+  ]
+}
